@@ -1,4 +1,4 @@
-// "use strict";
+"use strict";
 {
   function InBLock() {
     console.log("Try to invoke me outside this block");
