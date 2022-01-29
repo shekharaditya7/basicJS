@@ -21,6 +21,7 @@ module.exports = {
   resolve: {
     extensions: [".js", ".css", ".scss"],
   },
+  devtool: "inline-source-map",
   mode: "development",
   devServer: {
     // configuration for webpack-dev-server
