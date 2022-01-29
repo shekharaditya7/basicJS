@@ -1,0 +1,26 @@
+{
+  "name": "basic-js",
+  "version": "1.0.0",
+  "description": "Playing with JS",
+  "main": "./src/app/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --config ./webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shekharaditya7/basicJS.git"
+  },
+  "author": "Aditya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shekharaditya7/basicJS/issues"
+  },
+  "homepage": "https://github.com/shekharaditya7/basicJS#readme",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.67.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.3"
+  }
+}
