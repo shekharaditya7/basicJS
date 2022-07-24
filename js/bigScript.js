@@ -5,7 +5,6 @@
   }
 }
 // InBLock();
-console.log("Hello");
 
 const t = 200000;
 for (let i = 0; i < t; i++) {
