@@ -15,17 +15,50 @@ const activeButton = document.getElementById("activeButton");
 const completedButton = document.getElementById("completedButton");
 const todoContainer = document.getElementById("todoList");
 
+function renderTabs() {
+  if (currentTaskType === TASK_TYPES.ALL) {
+    allButton.style.color = "blue";
+    activeButton.style.color = "";
+    completedButton.style.color = "";
+  } else if (currentTaskType === TASK_TYPES.ACTIVE) {
+    allButton.style.color = "";
+    activeButton.style.color = "blue";
+    completedButton.style.color = "";
+  } else if (currentTaskType === TASK_TYPES.COMPLETED) {
+    allButton.style.color = "";
+    activeButton.style.color = "";
+    completedButton.style.color = "blue";
+  }
+}
+
+function render() {
+  todoContainer.innerHTML = "";
+  let filteredTodoList = [];
+  if (currentTaskType === TASK_TYPES.ALL) {
+    filteredTodoList = clientTodoList;
+  } else if (currentTaskType === TASK_TYPES.ACTIVE) {
+    filteredTodoList = clientTodoList.filter(
+      (item) => item.isCompleted === false
+    );
+  } else if (currentTaskType === TASK_TYPES.COMPLETED) {
+    filteredTodoList = clientTodoList.filter(
+      (item) => item.isCompleted === true
+    );
+  }
+  renderTabs();
+  filteredTodoList?.forEach((element) => {
+    const todoElement = createTotdoElement(element);
+    todoContainer.appendChild(todoElement);
+  });
+}
+
 async function handleAddTodo() {
   const title = inputBox.value;
   if (!title) return;
 
   const todoData = await todoAPI.createTodo({ title });
-  todoContainer.innerHTML = "";
-  console.log(todoData);
-  todoData?.data?.todoList?.forEach((element) => {
-    const todoElement = createTotdoElement(element);
-    todoContainer.appendChild(todoElement);
-  });
+  clientTodoList = todoData?.data?.todoList;
+  render();
   inputBox.value = "";
 }
 
@@ -58,11 +91,9 @@ function createTotdoElement({ id, title, isCompleted }) {
         title: editBox.value,
         isCompleted: isCompletedElement.checked,
       });
-      todoContainer.innerHTML = "";
-      todoData?.data?.todoList?.forEach((element) => {
-        const todoElement = createTotdoElement(element);
-        todoContainer.appendChild(todoElement);
-      });
+
+      clientTodoList = todoData?.data?.todoList;
+      render();
     });
   });
 
@@ -70,11 +101,9 @@ function createTotdoElement({ id, title, isCompleted }) {
   deleteElement.innerText = document.innerText = "Delete";
   deleteElement.addEventListener("click", async (event) => {
     const todoData = await todoAPI.deleteTodo({ id });
-    todoContainer.innerHTML = "";
-    todoData?.data?.todoList?.forEach((element) => {
-      const todoElement = createTotdoElement(element);
-      todoContainer.appendChild(todoElement);
-    });
+
+    clientTodoList = todoData?.data?.todoList;
+    render();
   });
 
   item.appendChild(titleElement);
@@ -92,14 +121,21 @@ inputBox.addEventListener("keypress", (event) => {
 
 allButton.addEventListener("click", () => {
   currentTaskType = TASK_TYPES.ALL;
+  render();
+});
+
+activeButton.addEventListener("click", () => {
+  currentTaskType = TASK_TYPES.ACTIVE;
+  render();
+});
+
+completedButton.addEventListener("click", () => {
+  currentTaskType = TASK_TYPES.COMPLETED;
+  render();
 });
 
 window.addEventListener("load", async () => {
   const todoData = await todoAPI.getTodos();
-  console.log(todoData);
-  clientTodoList = todoData?.data?.todoList || [];
-  todoData?.data?.todoList?.forEach((element) => {
-    const todoElement = createTotdoElement(element);
-    todoContainer.appendChild(todoElement);
-  });
+  clientTodoList = todoData?.data?.todoList;
+  render();
 });
