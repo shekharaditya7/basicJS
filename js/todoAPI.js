@@ -51,6 +51,7 @@ function updateTodo({ id, isCompleted, title }) {
   const todoItem = { id, title, isCompleted };
   todoList[indexToBeUpdated] = todoItem;
   localStorage.setItem(TODO_KEY, JSON.stringify(todoList));
+  console.log({ data: { todoList } });
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve({ data: { todoList } });

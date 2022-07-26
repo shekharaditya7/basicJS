@@ -21,6 +21,7 @@ async function handleAddTodo() {
 
   const todoData = await todoAPI.createTodo({ title });
   todoContainer.innerHTML = "";
+  console.log(todoData);
   todoData?.data?.todoList?.forEach((element) => {
     const todoElement = createTotdoElement(element);
     todoContainer.appendChild(todoElement);
@@ -95,6 +96,7 @@ allButton.addEventListener("click", () => {
 
 window.addEventListener("load", async () => {
   const todoData = await todoAPI.getTodos();
+  console.log(todoData);
   clientTodoList = todoData?.data?.todoList || [];
   todoData?.data?.todoList?.forEach((element) => {
     const todoElement = createTotdoElement(element);
